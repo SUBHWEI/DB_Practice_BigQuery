@@ -1,0 +1,13 @@
+# Dependencias
+node_modules/
+__pycache__/
+*.pyc
+venv/
+
+# Sensible (credenciales de Google Cloud)
+parques-backend/*.json
+
+# Build
+dist/
+.env
+.env.local
