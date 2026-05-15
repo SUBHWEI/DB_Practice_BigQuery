@@ -42,7 +42,7 @@ export default function PieChart({ data }) {
             ))}
           </Pie>
           <Tooltip
-            formatter={(value) => [`${value} parques`, 'Cantidad']}
+            formatter={(value) => [`${value} parques`]}
             contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
           />
           <Legend />
