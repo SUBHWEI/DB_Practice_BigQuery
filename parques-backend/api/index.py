@@ -1,8 +1,8 @@
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from mangum import Mangum
+from asgiref.wsgi import AsgiToWsgi
 from main import app
 
-handler = Mangum(app)
+handler = AsgiToWsgi(app)
