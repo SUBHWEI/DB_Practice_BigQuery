@@ -1,11 +1,20 @@
 import os
+import json
+import tempfile
 from pathlib import Path
 from google.cloud import bigquery
 
-# credenciales: si está el json lo usa, si no (cloud run) usa adc
+# credenciales: primero el json local, luego variable de entorno, sino adc
 creds_path = Path(__file__).with_name("parques-ibague-693b0648a77b.json")
 if creds_path.exists():
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(creds_path)
+else:
+    creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+    if creds_json:
+        tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
+        tmp.write(creds_json)
+        tmp.close()
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = tmp.name
 
 client = bigquery.Client()
 PROJECT = client.project
