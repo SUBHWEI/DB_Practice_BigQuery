@@ -7,11 +7,10 @@ import {
   Legend,
 } from 'recharts'
 
-// colores para cada porción del donut
 const COLORS = [
-  '#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6',
-  '#1abc9c', '#e67e22', '#34495e', '#16a085', '#c0392b',
-  '#2980b9', '#27ae60', '#8e44ad', '#d35400', '#7f8c8d',
+  '#2d6a4f', '#52b788', '#95d5b2', '#1b4332', '#40916c',
+  '#b7e4c7', '#1a3c34', '#74c69d', '#3a7d5c', '#4a9c7a',
+  '#6abf8e', '#8fccaa', '#d8f3dc', '#a3d9b2', '#2b5543',
 ]
 
 export default function PieChart({ data }) {
@@ -19,7 +18,8 @@ export default function PieChart({ data }) {
 
   return (
     <div className="chart-container">
-      <h3>Parques por Ubicación (Barrio)</h3>
+      <p className="chart-context">Densidad por Barrios</p>
+      <h3>Identificando los núcleos con mayor oferta recreativa</h3>
       <ResponsiveContainer width="100%" height={350}>
         <RechartsPie>
           <Pie
@@ -41,7 +41,10 @@ export default function PieChart({ data }) {
               <Cell key={i} fill={COLORS[i % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip formatter={(value, _name) => [`${value} parques`, 'Cantidad']} />
+          <Tooltip
+            formatter={(value) => [`${value} parques`, 'Cantidad']}
+            contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+          />
           <Legend />
         </RechartsPie>
       </ResponsiveContainer>

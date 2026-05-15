@@ -11,3 +11,6 @@ parques-backend/*.json
 dist/
 .env
 .env.local
+
+# Estudio (local)
+GUIA_ESTUDIO.txt

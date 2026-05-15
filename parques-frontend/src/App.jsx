@@ -108,6 +108,10 @@ export default function App() {
           />
           <DataTable data={parques} />
         </section>
+
+        <footer className="footer">
+          Transformando el espacio público en salud para todos los ibaguereños.
+        </footer>
       </main>
     </div>
   )

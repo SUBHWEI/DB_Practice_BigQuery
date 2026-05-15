@@ -9,11 +9,10 @@ import {
   Cell,
 } from 'recharts'
 
-// colores para cada barra
 const COLORS = [
-  '#3498db', '#2ecc71', '#f39c12', '#e74c3c', '#9b59b6',
-  '#1abc9c', '#e67e22', '#34495e', '#16a085', '#c0392b',
-  '#2980b9', '#27ae60', '#8e44ad',
+  '#2d6a4f', '#40916c', '#52b788', '#74c69d', '#95d5b2',
+  '#b7e4c7', '#1b4332', '#1a3c34', '#3a7d5c', '#4a9c7a',
+  '#6abf8e', '#8fccaa', '#2b5543',
 ]
 
 export default function BarChart({ data, onComunaClick }) {
@@ -21,22 +20,24 @@ export default function BarChart({ data, onComunaClick }) {
 
   return (
     <div className="chart-container">
-      <h3>Parques por Comuna</h3>
+      <p className="chart-context">Distribución Territorial</p>
+      <h3>¿Cómo se reparte el bienestar en nuestras comunas?</h3>
       <ResponsiveContainer width="100%" height={350}>
         <RechartsBar data={data} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e0d8" />
           <XAxis
             dataKey="COMUNA"
             label={{ value: 'Comuna', position: 'insideBottom', offset: -5 }}
-            tick={{ fontSize: 13 }}
+            tick={{ fontSize: 13, fill: '#666' }}
           />
           <YAxis
             label={{ value: 'Cantidad', angle: -90, position: 'insideLeft' }}
-            tick={{ fontSize: 13 }}
+            tick={{ fontSize: 13, fill: '#666' }}
           />
           <Tooltip
-            formatter={(value, _name) => [`${value} parques`, 'Cantidad']}
+            formatter={(value) => [`${value} parques`, 'Cantidad']}
             labelFormatter={(label) => `Comuna ${label}`}
+            contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
           />
           <Bar
             dataKey="total_parques"

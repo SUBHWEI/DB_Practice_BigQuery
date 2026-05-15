@@ -1,36 +1,36 @@
 export default function KPICards({ resumen }) {
   if (!resumen) return null
 
-  // tarjetas con los totales del dashboard
   const cards = [
     {
-      label: 'Total Parques',
+      label: 'Parques',
       value: resumen.total_parques,
       icon: '🌳',
-      color: '#2ecc71',
+      desc: 'Espacios activos en toda la red urbana.',
     },
     {
       label: 'Comunas',
       value: resumen.total_comunas,
       icon: '📍',
-      color: '#3498db',
+      desc: 'Territorios con cobertura biosaludable.',
     },
     {
-      label: 'Tipos de Lugar',
+      label: 'Tipos de lugar',
       value: resumen.total_tipos,
       icon: '🏷️',
-      color: '#f39c12',
+      desc: 'Áreas especializadas para el ejercicio.',
     },
   ]
 
   return (
     <div className="kpi-grid">
       {cards.map((c) => (
-        <div key={c.label} className="kpi-card" style={{ borderLeftColor: c.color }}>
-          <span className="kpi-icon">{c.icon}</span>
-          <div>
+        <div key={c.label} className="kpi-card">
+          <span className="kpi-icon-bg">{c.icon}</span>
+          <div className="kpi-body">
+            <p className="kpi-value">{c.value}</p>
             <p className="kpi-label">{c.label}</p>
-            <p className="kpi-value" style={{ color: c.color }}>{c.value}</p>
+            <p className="kpi-desc">{c.desc}</p>
           </div>
         </div>
       ))}
