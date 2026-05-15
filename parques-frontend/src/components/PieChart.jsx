@@ -4,7 +4,6 @@ import {
   Cell,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from 'recharts'
 
 const COLORS = [
@@ -45,9 +44,11 @@ export default function PieChart({ data }) {
             formatter={(value, name) => [`${value} parques`, name]}
             contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
           />
-          <Legend />
         </RechartsPie>
       </ResponsiveContainer>
+      <p className="chart-insight">
+        Pasa el mouse sobre la dona para ver el detalle por barrio
+      </p>
     </div>
   )
 }
