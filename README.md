@@ -10,9 +10,9 @@ Dashboard interactivo para visualizar y analizar los **561 parques biosaludables
 ## 🖥️ Tecnologías
 
 - **Frontend:** React + Vite + Recharts
-- **Backend:** FastAPI (Python)
+- **Backend:** FastAPI (Python) + Docker
 - **Base de datos:** Google BigQuery
-- **Despliegue:** Vercel (frontend) + Render (backend)
+- **Despliegue:** Vercel (frontend) + Render (backend con Docker)
 
 ## 📊 Funcionalidades
 
@@ -28,6 +28,7 @@ Dashboard interactivo para visualizar y analizar los **561 parques biosaludables
 # Backend
 cd parques-backend
 .\venv\Scripts\Activate
+pip install -r requirements.txt
 uvicorn main:app --reload
 
 # Frontend (otra terminal)
@@ -36,3 +37,11 @@ npm run dev
 ```
 
 Abrir [http://localhost:5173](http://localhost:5173)
+
+### Con Docker
+
+```bash
+cd parques-backend
+docker build -t parques-backend .
+docker run -p 8000:8080 parques-backend
+```
