@@ -2,24 +2,16 @@ import os
 from pathlib import Path
 from google.cloud import bigquery
 
-# ─── CONFIGURACIÓN ────────────────────────────────────────────────────────────
-# Pon aquí el nombre exacto de tu archivo JSON descargado de Google Cloud
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
-    Path(__file__).with_name("parques-ibague-693b0648a77b.json")
-)
+# credenciales: si está el json lo usa, si no (cloud run) usa adc
+creds_path = Path(__file__).with_name("parques-ibague-693b0648a77b.json")
+if creds_path.exists():
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(creds_path)
 
-# Inicializa el cliente (lee el proyecto automáticamente del JSON)
 client = bigquery.Client()
-
-# Datos de tu proyecto en BigQuery
-PROJECT = client.project                    # eco-droplet-477416-f2
-DATASET = "PARQUES"                         # nombre del dataset que creaste
-TABLE   = "PARQUES_BIOSALUDABLES"           # nombre de la tabla
-
-# Referencia completa a la tabla (con backticks para BigQuery)
+PROJECT = client.project
+DATASET = "PARQUES"
+TABLE   = "PARQUES_BIOSALUDABLES"
 TABLA = f"`{PROJECT}.{DATASET}.{TABLE}`"
-
-# ─── FUNCIONES DE CONSULTA ────────────────────────────────────────────────────
 
 def get_todos_los_parques():
     """Retorna todos los registros de la tabla."""
