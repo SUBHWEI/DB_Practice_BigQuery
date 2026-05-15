@@ -1,11 +1,21 @@
 import os
+import json
+import tempfile
 from pathlib import Path
 from google.cloud import bigquery
 
-# json con las credenciales de google cloud
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
-    Path(__file__).with_name("parques-ibague-693b0648a77b.json")
-)
+# si estamos en vercel, las credenciales vienen de una variable de entorno
+creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+if creds_json:
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
+    tmp.write(creds_json)
+    tmp.close()
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = tmp.name
+else:
+    # en local usa el archivo json del proyecto
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
+        Path(__file__).with_name("parques-ibague-693b0648a77b.json")
+    )
 
 client = bigquery.Client()  # conexión a bigquery
 
