@@ -9,6 +9,7 @@ import {
   Cell,
 } from 'recharts'
 
+// colores para cada barra
 const COLORS = [
   '#3498db', '#2ecc71', '#f39c12', '#e74c3c', '#9b59b6',
   '#1abc9c', '#e67e22', '#34495e', '#16a085', '#c0392b',

@@ -2,24 +2,21 @@ import os
 from pathlib import Path
 from google.cloud import bigquery
 
-# ─── CONFIGURACIÓN ────────────────────────────────────────────────────────────
-# Pon aquí el nombre exacto de tu archivo JSON descargado de Google Cloud
+# json con las credenciales de google cloud
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
     Path(__file__).with_name("parques-ibague-693b0648a77b.json")
 )
 
-# Inicializa el cliente (lee el proyecto automáticamente del JSON)
-client = bigquery.Client()
+client = bigquery.Client()  # conexión a bigquery
 
-# Datos de tu proyecto en BigQuery
-PROJECT = client.project                    # eco-droplet-477416-f2
-DATASET = "PARQUES"                         # nombre del dataset que creaste
-TABLE   = "PARQUES_BIOSALUDABLES"           # nombre de la tabla
+# datos de la tabla en bigquery
+PROJECT = client.project
+DATASET = "PARQUES"
+TABLE   = "PARQUES_BIOSALUDABLES"
 
-# Referencia completa a la tabla (con backticks para BigQuery)
-TABLA = f"`{PROJECT}.{DATASET}.{TABLE}`"
+TABLA = f"`{PROJECT}.{DATASET}.{TABLE}`"  # nombre completo para las consultas
 
-# ─── FUNCIONES DE CONSULTA ────────────────────────────────────────────────────
+# --- consultas ---
 
 def get_todos_los_parques():
     """Retorna todos los registros de la tabla."""
@@ -83,7 +80,7 @@ def get_parques_de_comuna(numero_comuna: int):
 
 def buscar_parques(texto: str):
     """Búsqueda por texto en DIRECCION o UBICACIÓN."""
-    texto_safe = texto.replace("'", "''")   # evita SQL injection básico
+    texto_safe = texto.replace("'", "''")  # evita inyección sql
     query = f"""
         SELECT *
         FROM {TABLA}

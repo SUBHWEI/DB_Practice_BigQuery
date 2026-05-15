@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 20  // filas por página
 
 export default function DataTable({ data }) {
   const [page, setPage] = useState(1)
@@ -16,7 +16,6 @@ export default function DataTable({ data }) {
     return data.slice(start, start + PAGE_SIZE)
   }, [data, page])
 
-  // Reset page when data changes
   useMemo(() => {
     if (data && page > Math.ceil(data.length / PAGE_SIZE)) {
       setPage(1)

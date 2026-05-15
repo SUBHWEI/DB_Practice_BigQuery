@@ -1,6 +1,7 @@
 export default function KPICards({ resumen }) {
   if (!resumen) return null
 
+  // tarjetas con los totales del dashboard
   const cards = [
     {
       label: 'Total Parques',

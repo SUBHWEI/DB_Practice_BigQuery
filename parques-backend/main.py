@@ -11,22 +11,22 @@ from bigquery_client import (
     buscar_parques,
 )
 
-# ─── APP ──────────────────────────────────────────────────────────────────────
+# configuración de la api
 app = FastAPI(
     title="API Parques Biosaludables - Ibagué",
     description="Backend conectado a BigQuery con datos de parques biosaludables",
     version="1.0.0",
 )
 
-# ─── CORS (permite que React se conecte desde cualquier origen) ───────────────
+# para que react se pueda conectar
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # en producción cambia "*" por tu dominio
+    allow_origins=["*"],  # cambiar en producción
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ─── ENDPOINTS ────────────────────────────────────────────────────────────────
+# --- endpoints ---
 
 @app.get("/", tags=["Estado"])
 def root():

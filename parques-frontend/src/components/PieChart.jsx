@@ -7,6 +7,7 @@ import {
   Legend,
 } from 'recharts'
 
+// colores para cada porción del donut
 const COLORS = [
   '#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6',
   '#1abc9c', '#e67e22', '#34495e', '#16a085', '#c0392b',

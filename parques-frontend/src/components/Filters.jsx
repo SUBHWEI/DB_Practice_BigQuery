@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { fetchBuscarParques, fetchParquesDeComuna, fetchTodosLosParques } from '../api'
 
+// agarra la ubicación del parque, con o sin acento
 const UBICACION_KEY = (p) => p['UBICACIÓN'] || p['UBICACION'] || 'Sin ubicación'
 
 export default function Filters({ comunaData, ubicaciones, onFilter }) {

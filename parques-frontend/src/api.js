@@ -1,4 +1,7 @@
+// url base, en producción se configura con VITE_API_URL
 const BASE = import.meta.env.VITE_API_URL || ''
+
+// --- llamadas al backend ---
 
 export async function fetchTodosLosParques() {
   const res = await fetch(`${BASE}/parques`)
@@ -36,6 +39,7 @@ export async function fetchBuscarParques(texto) {
   return res.json()
 }
 
+// agrupa parques por barrio, solo muestra los top 10
 export function groupByUbicacion(parques, max = 10) {
   const map = {}
   for (const p of parques) {
@@ -54,6 +58,7 @@ export function groupByUbicacion(parques, max = 10) {
   return top
 }
 
+// extrae los barrios únicos para el filtro
 export function uniqueUbicaciones(parques) {
   const set = new Set()
   for (const p of parques) {

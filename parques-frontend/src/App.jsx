@@ -15,6 +15,7 @@ import {
 } from './api'
 
 export default function App() {
+  // estado del dashboard
   const [allParques, setAllParques] = useState([])
   const [parques, setParques] = useState([])
   const [resumen, setResumen] = useState(null)
@@ -25,6 +26,7 @@ export default function App() {
   const porUbicacion = useMemo(() => groupByUbicacion(allParques), [allParques])
   const ubicaciones = useMemo(() => uniqueUbicaciones(allParques), [allParques])
 
+  // carga los datos cuando se abre la página
   useEffect(() => {
     async function load() {
       try {
@@ -50,6 +52,7 @@ export default function App() {
     setParques(data)
   }
 
+  // cuando dan click en una barra del gráfico
   async function handleComunaClick(numero) {
     try {
       const data = await fetchParquesDeComuna(numero)
@@ -86,13 +89,16 @@ export default function App() {
       <Header />
 
       <main className="main">
+        {/* indicadores principales */}
         <KPICards resumen={resumen} />
 
+        {/* gráficos */}
         <div className="charts-grid">
           <BarChart data={porComuna} onComunaClick={handleComunaClick} />
           <PieChart data={porUbicacion} />
         </div>
 
+        {/* tabla con filtros */}
         <section className="section">
           <h2>Explorar datos</h2>
           <Filters
