@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from bigquery_client import (
-    client,
+    _get_client,
     get_todos_los_parques,
     get_parques_por_comuna,
     get_resumen,
@@ -33,7 +33,7 @@ def root():
     """Verifica que el servidor esté corriendo y conectado a BigQuery."""
     return {
         "estado": "activo",
-        "proyecto_bigquery": client.project,
+        "proyecto_bigquery": _get_client().project,
         "mensaje": "API Parques Biosaludables funcionando correctamente",
     }
 

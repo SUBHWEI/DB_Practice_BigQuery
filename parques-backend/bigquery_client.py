@@ -2,9 +2,8 @@ import os
 import json
 import tempfile
 from pathlib import Path
-from google.cloud import bigquery
 
-# si estamos en vercel, las credenciales vienen de una variable de entorno
+# credenciales de google cloud
 creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
 if creds_json:
     tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
@@ -12,92 +11,77 @@ if creds_json:
     tmp.close()
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = tmp.name
 else:
-    # en local usa el archivo json del proyecto
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
         Path(__file__).with_name("parques-ibague-693b0648a77b.json")
     )
 
-client = bigquery.Client()  # conexión a bigquery
+_client = None
+_TABLA = None
 
-# datos de la tabla en bigquery
-PROJECT = client.project
-DATASET = "PARQUES"
-TABLE   = "PARQUES_BIOSALUDABLES"
+def _get_client():
+    global _client
+    if _client is None:
+        from google.cloud import bigquery
+        _client = bigquery.Client()
+    return _client
 
-TABLA = f"`{PROJECT}.{DATASET}.{TABLE}`"  # nombre completo para las consultas
+def _get_tabla():
+    global _TABLA
+    if _TABLA is None:
+        c = _get_client()
+        _TABLA = f"`{c.project}.PARQUES.PARQUES_BIOSALUDABLES`"
+    return _TABLA
 
 # --- consultas ---
 
 def get_todos_los_parques():
-    """Retorna todos los registros de la tabla."""
-    query = f"SELECT * FROM {TABLA} ORDER BY ID"
-    rows = client.query(query)
+    query = f"SELECT * FROM {_get_tabla()} ORDER BY ID"
+    rows = _get_client().query(query)
     return [dict(row) for row in rows]
-
 
 def get_parques_por_comuna():
-    """Cuenta cuántos parques hay en cada comuna."""
     query = f"""
-        SELECT
-            COMUNA,
-            COUNT(*) AS total_parques
-        FROM {TABLA}
-        GROUP BY COMUNA
-        ORDER BY COMUNA ASC
+        SELECT COMUNA, COUNT(*) AS total_parques
+        FROM {_get_tabla()}
+        GROUP BY COMUNA ORDER BY COMUNA ASC
     """
-    rows = client.query(query)
+    rows = _get_client().query(query)
     return [dict(row) for row in rows]
-
 
 def get_resumen():
-    """Totales globales para las tarjetas KPI del dashboard."""
     query = f"""
-        SELECT
-            COUNT(*)                              AS total_parques,
-            COUNT(DISTINCT COMUNA)                AS total_comunas,
-            COUNT(DISTINCT `IDENTIFICACION LUGAR`) AS total_tipos
-        FROM {TABLA}
+        SELECT COUNT(*) AS total_parques,
+               COUNT(DISTINCT COMUNA) AS total_comunas,
+               COUNT(DISTINCT `IDENTIFICACION LUGAR`) AS total_tipos
+        FROM {_get_tabla()}
     """
-    rows = list(client.query(query))
+    rows = list(_get_client().query(query))
     return dict(rows[0])
 
-
 def get_parques_por_tipo():
-    """Agrupa por tipo de identificación de lugar."""
     query = f"""
-        SELECT
-            `IDENTIFICACION LUGAR` AS tipo,
-            COUNT(*) AS total
-        FROM {TABLA}
-        GROUP BY tipo
-        ORDER BY total DESC
+        SELECT `IDENTIFICACION LUGAR` AS tipo, COUNT(*) AS total
+        FROM {_get_tabla()}
+        GROUP BY tipo ORDER BY total DESC
     """
-    rows = client.query(query)
+    rows = _get_client().query(query)
     return [dict(row) for row in rows]
-
 
 def get_parques_de_comuna(numero_comuna: int):
-    """Filtra todos los parques de una comuna específica."""
     query = f"""
-        SELECT *
-        FROM {TABLA}
-        WHERE COMUNA = {numero_comuna}
-        ORDER BY ID
+        SELECT * FROM {_get_tabla()}
+        WHERE COMUNA = {numero_comuna} ORDER BY ID
     """
-    rows = client.query(query)
+    rows = _get_client().query(query)
     return [dict(row) for row in rows]
 
-
 def buscar_parques(texto: str):
-    """Búsqueda por texto en DIRECCION o UBICACIÓN."""
-    texto_safe = texto.replace("'", "''")  # evita inyección sql
+    texto_safe = texto.replace("'", "''")
     query = f"""
-        SELECT *
-        FROM {TABLA}
-        WHERE
-            LOWER(DIRECCION)  LIKE LOWER('%{texto_safe}%')
-            OR LOWER(`UBICACIÓN`) LIKE LOWER('%{texto_safe}%')
+        SELECT * FROM {_get_tabla()}
+        WHERE LOWER(DIRECCION) LIKE LOWER('%{texto_safe}%')
+           OR LOWER(`UBICACIÓN`) LIKE LOWER('%{texto_safe}%')
         ORDER BY ID
     """
-    rows = client.query(query)
+    rows = _get_client().query(query)
     return [dict(row) for row in rows]
