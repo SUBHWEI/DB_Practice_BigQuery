@@ -22,7 +22,7 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const porUbicacion = useMemo(() => groupByUbicacion(allParques), [allParques])
+  const porUbicacion = useMemo(() => groupByUbicacion(parques), [parques])
   const ubicaciones = useMemo(() => uniqueUbicaciones(allParques), [allParques])
 
   // carga los datos cuando se abre la página
