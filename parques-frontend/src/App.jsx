@@ -9,7 +9,6 @@ import {
   fetchTodosLosParques,
   fetchResumen,
   fetchPorComuna,
-  fetchParquesDeComuna,
   groupByUbicacion,
   uniqueUbicaciones,
 } from './api'
@@ -53,13 +52,9 @@ export default function App() {
   }
 
   // cuando dan click en una barra del gráfico
-  async function handleComunaClick(numero) {
-    try {
-      const data = await fetchParquesDeComuna(numero)
-      setParques(data)
-    } catch (err) {
-      setError(err.message)
-    }
+  function handleComunaClick(numero) {
+    const filtrados = allParques.filter((p) => p.COMUNA === numero)
+    setParques(filtrados)
   }
 
   if (loading) {

@@ -42,7 +42,10 @@ export default function BarChart({ data, onComunaClick }) {
           <Bar
             dataKey="total_parques"
             cursor="pointer"
-            onClick={(entry) => onComunaClick?.(entry.COMUNA)}
+            onClick={(data) => {
+              const comuna = data?.payload?.COMUNA ?? data?.COMUNA;
+              if (comuna) onComunaClick(comuna);
+            }}
             radius={[6, 6, 0, 0]}
           >
             {data.map((_, i) => (
