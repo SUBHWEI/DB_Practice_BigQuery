@@ -2,12 +2,17 @@
 
 Dashboard interactivo para visualizar y analizar los **561 parques biosaludables** de Ibagué, conectado a **BigQuery** mediante una API en **FastAPI**.
 
+## 🔗 Links
+
+- **Dashboard:** [db-practice-big-query.vercel.app](https://db-practice-big-query.vercel.app/)
+- **Backend API:** [parques-backend.onrender.com](https://parques-backend.onrender.com/)
+
 ## 🖥️ Tecnologías
 
 - **Frontend:** React + Vite + Recharts
 - **Backend:** FastAPI (Python)
 - **Base de datos:** Google BigQuery
-- **Despliegue:** Vercel (frontend)
+- **Despliegue:** Vercel (frontend) + Render (backend)
 
 ## 📊 Funcionalidades
 
