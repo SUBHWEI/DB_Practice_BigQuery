@@ -6,7 +6,6 @@ venv/
 
 # Sensible (credenciales de Google Cloud)
 parques-backend/*.json
-!parques-backend/vercel.json
 
 # Build
 dist/

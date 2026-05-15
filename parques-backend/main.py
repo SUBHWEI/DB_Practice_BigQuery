@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from bigquery_client import (
-    _get_client,
+    client,
     get_todos_los_parques,
     get_parques_por_comuna,
     get_resumen,
@@ -11,29 +11,29 @@ from bigquery_client import (
     buscar_parques,
 )
 
-# configuración de la api
+# ─── APP ──────────────────────────────────────────────────────────────────────
 app = FastAPI(
     title="API Parques Biosaludables - Ibagué",
     description="Backend conectado a BigQuery con datos de parques biosaludables",
     version="1.0.0",
 )
 
-# para que react se pueda conectar
+# ─── CORS (permite que React se conecte desde cualquier origen) ───────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # cambiar en producción
+    allow_origins=["*"],      # en producción cambia "*" por tu dominio
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- endpoints ---
+# ─── ENDPOINTS ────────────────────────────────────────────────────────────────
 
 @app.get("/", tags=["Estado"])
 def root():
     """Verifica que el servidor esté corriendo y conectado a BigQuery."""
     return {
         "estado": "activo",
-        "proyecto_bigquery": _get_client().project,
+        "proyecto_bigquery": client.project,
         "mensaje": "API Parques Biosaludables funcionando correctamente",
     }
 
